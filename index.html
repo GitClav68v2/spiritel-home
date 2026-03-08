@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spiritel — Technology Incubator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan: #00D4FF;
+      --text: #E2EEF4;
+      --muted: #6A8A96;
+      --border: rgba(0, 212, 255, 0.2);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #020B10;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Background ── */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 80, 130, 0.5) 0%, transparent 65%),
+        linear-gradient(160deg, #020B10 0%, #03111A 50%, #020C14 100%);
+    }
+
+    .bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 30%, black 30%, transparent 100%);
+    }
+
+    /* Scan line */
+    .scanline {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.1;
+      animation: scan 10s linear infinite;
+      z-index: 3;
+    }
+    @keyframes scan {
+      from { top: -2px; }
+      to   { top: 100vh; }
+    }
+
+    /* Corner accents */
+    .corner {
+      position: fixed;
+      width: 36px; height: 36px;
+      opacity: 0.2;
+      z-index: 3;
+    }
+    .corner--tl { top: 20px; left: 20px; border-top: 1px solid var(--cyan); border-left: 1px solid var(--cyan); }
+    .corner--tr { top: 20px; right: 20px; border-top: 1px solid var(--cyan); border-right: 1px solid var(--cyan); }
+    .corner--bl { bottom: 20px; left: 20px; border-bottom: 1px solid var(--cyan); border-left: 1px solid var(--cyan); }
+    .corner--br { bottom: 20px; right: 20px; border-bottom: 1px solid var(--cyan); border-right: 1px solid var(--cyan); }
+
+    /* ── Earth (lower third) ── */
+    .earth-stage {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    .globe {
+      width: 580px;
+      height: 200px;
+      border-radius: 120px;
+      overflow: hidden;
+      position: relative;
+      box-shadow:
+        0 0 80px rgba(0, 150, 255, 0.25),
+        0 0 160px rgba(0, 80, 180, 0.15);
+    }
+
+    .globe-map {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 100%;
+      background: url('earth2.jpg') 0 60% / 50% auto;
+      animation: earth-spin 60s linear infinite;
+    }
+
+    @keyframes earth-spin {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* 3D sphere shading */
+    .globe-shade {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 38% 32%, rgba(255,255,255,0.07) 0%, transparent 50%),
+        radial-gradient(circle at 70% 72%, rgba(0,0,0,0.65) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* Atmosphere glow */
+    .globe-atmo {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      pointer-events: none;
+      box-shadow:
+        inset 0 0 30px 10px rgba(0, 120, 255, 0.15),
+        0 0 40px 15px rgba(0, 100, 220, 0.2);
+    }
+
+    /* ── Main content ── */
+    .stage {
+      position: relative;
+      z-index: 2;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: clamp(3rem, 8vh, 5rem);
+      text-align: center;
+    }
+
+    /* Wordmark */
+    .wordmark {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.2rem, 7vw, 4.2rem);
+      letter-spacing: 0.3em;
+      color: #fff;
+      text-shadow: 0 0 40px rgba(0, 212, 255, 0.45);
+      line-height: 1;
+    }
+    .wordmark span { color: var(--cyan); }
+
+    .brand-block {
+      display: inline-block;
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .brand-block .wordmark { margin-bottom: 0.3rem; }
+
+    .category {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.7rem;
+      letter-spacing: 0.2em;
+      color: var(--cyan);
+      text-transform: uppercase;
+    }
+
+    .divider {
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      margin: 0 auto 1.25rem;
+      opacity: 0.4;
+    }
+
+    .tagline {
+      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+      font-weight: 400;
+      color: #9BB8C8;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Contact card ── */
+    .card {
+      border: 1px solid var(--border);
+      background: rgba(0, 18, 30, 0.7);
+      backdrop-filter: blur(16px);
+      border-radius: 4px;
+      padding: 2rem 2.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .card-photo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      object-position: center top;
+      flex-shrink: 0;
+      filter: saturate(0.85);
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      text-align: left;
+    }
+
+    .card-name {
+      font-size: 0.95rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .card-row {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .card-row svg { flex-shrink: 0; opacity: 0.55; }
+    .card-row a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .card-row a:hover { color: var(--cyan); }
+
+    @media (max-width: 500px) {
+      .card { flex-direction: column; padding: 1.25rem; gap: 1rem; }
+      .card-info { text-align: center; align-items: center; }
+      .globe { width: 340px; height: 340px; }
+      .earth-stage { bottom: -160px; }
+      .corner { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg"></div>
+  <div class="scanline"></div>
+
+  <div class="corner corner--tl"></div>
+  <div class="corner corner--tr"></div>
+  <div class="corner corner--bl"></div>
+  <div class="corner corner--br"></div>
+
+  <!-- Spinning Earth — lower third -->
+  <div class="earth-stage">
+    <div class="globe">
+      <div class="globe-map"></div>
+      <div class="globe-shade"></div>
+    </div>
+    <div class="globe-atmo"></div>
+  </div>
+
+  <!-- Main content -->
+  <main class="stage">
+
+    <div class="brand-block">
+      <h1 class="wordmark">SPIRI<span>TEL</span></h1>
+      <p class="category">Technology Incubator</p>
+    </div>
+    <div class="divider"></div>
+    <p class="tagline">"All Signal, No Noise."</p>
+
+    <div class="card">
+      <img class="card-photo" src="david-ai.jpg" alt="David Clavadetscher">
+      <div class="card-info">
+        <p class="card-name">David Clavadetscher</p>
+        <div class="card-row">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <a href="mailto:david@spiritel.net">david@spiritel.net</a>
+        </div>
+        <div class="card-row">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.15A16 16 0 0015.1 17.1l1.51-1.52a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <a href="tel:7146812412">(714) 681-2412</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>
