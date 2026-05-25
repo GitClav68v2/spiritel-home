@@ -236,9 +236,32 @@
     .card-row a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .card-row a:hover { color: var(--cyan); }
 
+    .card-img-wrap {
+      position: relative;
+      display: inline-block;
+      max-width: 580px;
+      width: 90vw;
+    }
+    .card-img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+    }
+    .card-link {
+      position: absolute;
+      display: block;
+    }
+    .card-link--email {
+      right: 5%; top: 55%;
+      width: 38%; height: 14%;
+    }
+    .card-link--phone {
+      right: 5%; top: 72%;
+      width: 38%; height: 14%;
+    }
+
     @media (max-width: 500px) {
-      .card { flex-direction: column; padding: 1.25rem; gap: 1rem; }
-      .card-info { text-align: center; align-items: center; }
       .globe { width: 340px; height: 340px; }
       .earth-stage { bottom: -160px; }
       .corner { display: none; }
@@ -274,19 +297,10 @@
     <div class="divider"></div>
     <p class="tagline">"All Signal, No Noise."</p>
 
-    <div class="card">
-      <img class="card-photo" src="david-ai.jpg" alt="David Clavadetscher">
-      <div class="card-info">
-        <p class="card-name">David Clavadetscher</p>
-        <div class="card-row">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <a href="mailto:david@spiritel.net">david@spiritel.net</a>
-        </div>
-        <div class="card-row">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.15A16 16 0 0015.1 17.1l1.51-1.52a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          <a href="tel:7146812412">(714) 681-2412</a>
-        </div>
-      </div>
+    <div class="card-img-wrap">
+      <img class="card-img" src="wave-contact-card.png" alt="David Clavadetscher — Technology Incubator contact card">
+      <a class="card-link card-link--email" href="mailto:david@spiritel.net" aria-label="Email david@spiritel.net"></a>
+      <a class="card-link card-link--phone" href="tel:7146812412" aria-label="Call (714) 681-2412"></a>
     </div>
 
   </main>
