@@ -73,24 +73,18 @@
     .corner--bl { bottom: 20px; left: 20px; border-bottom: 1px solid var(--cyan); border-left: 1px solid var(--cyan); }
     .corner--br { bottom: 20px; right: 20px; border-bottom: 1px solid var(--cyan); border-right: 1px solid var(--cyan); }
 
-    /* ── Earth (lower third) ── */
+    /* ── Earth (full-screen scrolling background) ── */
     .earth-stage {
       position: fixed;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
+      inset: 0;
       z-index: 1;
+      overflow: hidden;
     }
 
     .globe {
-      width: 580px;
-      height: 200px;
-      border-radius: 120px;
-      overflow: hidden;
+      width: 100%;
+      height: 100%;
       position: relative;
-      box-shadow:
-        0 0 80px rgba(0, 150, 255, 0.25),
-        0 0 160px rgba(0, 80, 180, 0.15);
     }
 
     .globe-map {
@@ -99,8 +93,9 @@
       left: 0;
       width: 200%;
       height: 100%;
-      background: url('earth2.jpg') 0 60% / 50% auto;
-      animation: earth-spin 60s linear infinite;
+      background: url('earth2.jpg') 0 center / 50% cover;
+      animation: earth-spin 90s linear infinite;
+      opacity: 0.35;
     }
 
     @keyframes earth-spin {
@@ -108,27 +103,14 @@
       to   { transform: translateX(-50%); }
     }
 
-    /* 3D sphere shading */
     .globe-shade {
       position: absolute;
       inset: 0;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 38% 32%, rgba(255,255,255,0.07) 0%, transparent 50%),
-        radial-gradient(circle at 70% 72%, rgba(0,0,0,0.65) 0%, transparent 55%);
+      background: radial-gradient(ellipse 80% 70% at 50% 40%, transparent 30%, rgba(2, 11, 16, 0.8) 100%);
       pointer-events: none;
     }
 
-    /* Atmosphere glow */
-    .globe-atmo {
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-      pointer-events: none;
-      box-shadow:
-        inset 0 0 30px 10px rgba(0, 120, 255, 0.15),
-        0 0 40px 15px rgba(0, 100, 220, 0.2);
-    }
+    .globe-atmo { display: none; }
 
     /* ── Main content ── */
     .stage {
