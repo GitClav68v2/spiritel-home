@@ -1,0 +1,20 @@
+# Secrets — never commit. This repo is PUBLIC.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*credential*
+*secret*
+*.p12
+*.pfx
+
+# Contact / recipient lists (PII)
+*.csv
+
+# Local tooling + OS noise
+.DS_Store
+.wrangler/
+node_modules/
+.vercel/
+*.log
