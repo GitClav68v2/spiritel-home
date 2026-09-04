@@ -130,6 +130,20 @@
       0%, 100% { opacity: 0.7; transform: scale(1); }
       50%      { opacity: 1;   transform: scale(1.35); }
     }
+    @media (max-width: 600px) {
+      /* The map squeezes ~4x narrower on a phone; fixed 21px dots read as
+         golf balls. Scale them (and their glow) down with the map. */
+      .city-dot {
+        width: 11px; height: 11px;
+        margin: -5.5px 0 0 -5.5px;
+        box-shadow: 0 0 8px rgba(255,182,39,0.85), 0 0 18px rgba(255,182,39,0.4);
+      }
+      /* The desktop vignette blacks out the lower half of a tall-narrow
+         viewport — widen it so the map stays visible down the screen. */
+      .globe-shade {
+        background: radial-gradient(ellipse 150% 85% at 50% 35%, transparent 45%, rgba(2,11,16,0.75) 100%);
+      }
+    }
 
     /* ── Main content ── */
     .stage {
