@@ -123,9 +123,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      /* Vertically centered (2026-09-04); the ticker bar owns the top strip. */
-      justify-content: center;
-      padding-top: 34px; /* keep optical center below the fixed ticker */
+      /* Anchored low (2026-09-04): the wordmark rides the dark ocean beneath
+         the world map, where it stays visible; the ticker owns the top strip. */
+      justify-content: flex-end;
+      padding-top: 34px;
+      padding-bottom: clamp(2.5rem, 7vh, 5rem);
       text-align: center;
     }
 
@@ -339,6 +341,7 @@
       ['New York', 'America/New_York'],
       ['São Paulo', 'America/Sao_Paulo'],
       ['London', 'Europe/London'],
+      ['Moscow', 'Europe/Moscow'],
       ['Johannesburg', 'Africa/Johannesburg'],
       ['Tokyo', 'Asia/Tokyo']
     ];
