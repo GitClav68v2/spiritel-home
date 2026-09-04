@@ -319,8 +319,9 @@
     }
 
     @media (max-width: 500px) {
-      .globe { width: 340px; height: 340px; }
-      .earth-stage { bottom: -160px; }
+      /* .globe/.earth-stage overrides removed 2026-09-04: relics of the old
+         small-sphere design that shrank today's full-screen map to a 340px
+         square on phones. The map now fills the viewport at every width. */
       .corner { display: none; }
     }
   </style>
