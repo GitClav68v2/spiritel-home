@@ -123,10 +123,49 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding-top: clamp(3rem, 8vh, 5rem);
+      /* Vertically centered (2026-09-04); the ticker bar owns the top strip. */
+      justify-content: center;
+      padding-top: 34px; /* keep optical center below the fixed ticker */
       text-align: center;
     }
+
+    /* ── Market + world-clock ticker ── */
+    .ticker {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 5;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: linear-gradient(to bottom, rgba(2,11,16,0.85), rgba(2,11,16,0.35));
+      border-bottom: 1px solid var(--border);
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+              mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+    }
+    .ticker-track {
+      display: flex;
+      flex-shrink: 0;
+      white-space: nowrap;
+      animation: ticker-scroll 70s linear infinite;
+    }
+    .ticker:hover .ticker-track { animation-play-state: paused; }
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .ticker-seq {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      font-variant-numeric: tabular-nums;
+    }
+    .ticker-seq span { display: inline-flex; align-items: center; }
+    .tk-label { color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-right: 6px; }
+    .tk-value { color: var(--text); font-weight: 500; }
+    .tk-sep { color: var(--muted); margin: 0 18px; }
+    @media (max-width: 600px) { .ticker-seq { font-size: 11px; } .tk-sep { margin: 0 12px; } }
 
     /* Wordmark */
     .wordmark {
@@ -284,6 +323,65 @@
     </div>
 
   </main>
+
+  <!-- Market + world-clock ticker (prices via /api/ticker, 10-min edge cache;
+       clocks are pure browser time — no API) -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <script>
+  (function () {
+    var prices = null;
+
+    var CITIES = [
+      ['Los Angeles', 'America/Los_Angeles'],
+      ['New York', 'America/New_York'],
+      ['São Paulo', 'America/Sao_Paulo'],
+      ['London', 'Europe/London'],
+      ['Johannesburg', 'Africa/Johannesburg'],
+      ['Tokyo', 'Asia/Tokyo']
+    ];
+
+    function fmtMoney(n, decimals) {
+      return n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+    }
+
+    function seqHTML() {
+      var parts = [];
+      if (prices) {
+        if (prices.dow) parts.push('<span><span class="tk-label">Dow</span><span class="tk-value">' + fmtMoney(prices.dow, 0) + '</span></span>');
+        if (prices.gold) parts.push('<span><span class="tk-label">Gold</span><span class="tk-value">$' + fmtMoney(prices.gold, 0) + '</span></span>');
+        if (prices.oil) parts.push('<span><span class="tk-label">Oil</span><span class="tk-value">$' + fmtMoney(prices.oil, 2) + '</span></span>');
+      }
+      for (var i = 0; i < CITIES.length; i++) {
+        var t = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: CITIES[i][1] }).format(new Date());
+        parts.push('<span><span class="tk-label">' + CITIES[i][0] + '</span><span class="tk-value">' + t + '</span></span>');
+      }
+      return '<span class="ticker-seq">' + parts.join('<span class="tk-sep">▪</span>') + '<span class="tk-sep">▪</span></span>';
+    }
+
+    function render() {
+      // Two identical sequences make the -50% scroll loop seamless.
+      var one = seqHTML();
+      document.getElementById('tickerTrack').innerHTML = one + one;
+    }
+
+    function loadPrices() {
+      fetch('/api/ticker').then(function (r) {
+        if (!r.ok) throw new Error();
+        return r.json();
+      }).then(function (data) {
+        if (!data.error) { prices = data; render(); }
+      }).catch(function () { /* clocks-only is fine */ });
+    }
+
+    render();               // clocks immediately
+    loadPrices();           // prices when they arrive
+    setInterval(render, 30000);          // keep clocks current
+    setInterval(loadPrices, 600000);     // refresh prices every 10 min
+  })();
+  </script>
 
 </body>
 </html>
