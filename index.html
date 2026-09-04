@@ -93,13 +93,22 @@
       left: 0;
       width: 200%;
       height: 100%;
-      background-image: url('Spiritel%20Network%20Map.jpg');
-      background-position: 0 center;
-      background-size: 50% 100%;
-      background-repeat: repeat-x;
       animation: earth-spin 90s linear infinite;
       opacity: 1;
     }
+    /* Two real image tiles instead of an animated repeat-x background —
+       mobile browsers (iOS Safari and Chrome both, differently) mis-paint
+       animated repeating backgrounds, leaving black regions and detaching
+       the dots from their continents (David's device test, 2026-09-04). */
+    .globe-tile {
+      position: absolute;
+      top: 0; height: 100%; width: 50%;
+      object-fit: fill;
+      pointer-events: none;
+      user-select: none;
+    }
+    .globe-tile:first-child { left: 0; }
+    .globe-tile + .globe-tile { left: 50%; }
 
     @keyframes earth-spin {
       from { transform: translateX(-50%); }
@@ -318,6 +327,14 @@
       width: 38%; height: 14%;
     }
 
+    /* Landscape phones: the full-size wordmark + card overflow a ~400px-tall
+       viewport and collide with the ticker. Compact both. */
+    @media (max-height: 520px) {
+      .wordmark { font-size: 1.6rem; letter-spacing: 0.22em; margin-bottom: 0.5rem !important; }
+      .card-img-wrap { max-height: 58vh; }
+      .card-img { max-height: 58vh; width: auto; }
+      .stage { padding-bottom: 1rem; }
+    }
     @media (max-width: 500px) {
       /* .globe/.earth-stage overrides removed 2026-09-04: relics of the old
          small-sphere design that shrank today's full-screen map to a 340px
@@ -339,7 +356,7 @@
   <!-- Spinning Earth — lower third -->
   <div class="earth-stage">
     <div class="globe">
-      <div class="globe-map"></div>
+      <div class="globe-map"><img class="globe-tile" src="Spiritel%20Network%20Map.jpg" alt=""><img class="globe-tile" src="Spiritel%20Network%20Map.jpg" alt=""></div>
       <div class="globe-shade"></div>
     </div>
     <div class="globe-atmo"></div>
@@ -391,7 +408,7 @@
           html += '<div class="city-dot" style="left:' + (CITIES[i][2] * 50 + c * 50) + '%;top:' + (CITIES[i][3] * 100) + '%"></div>';
         }
       }
-      map.innerHTML = html;
+      map.insertAdjacentHTML('beforeend', html);
     })();
 
     function fmtMoney(n, decimals) {
