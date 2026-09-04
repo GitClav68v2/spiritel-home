@@ -356,6 +356,7 @@
         if (prices.dow) parts.push('<span><span class="tk-label">Dow</span><span class="tk-value">' + fmtMoney(prices.dow, 0) + '</span></span>');
         if (prices.gold) parts.push('<span><span class="tk-label">Gold</span><span class="tk-value">$' + fmtMoney(prices.gold, 0) + '</span></span>');
         if (prices.oil) parts.push('<span><span class="tk-label">Oil</span><span class="tk-value">$' + fmtMoney(prices.oil, 2) + '</span></span>');
+        if (prices.btc) parts.push('<span><span class="tk-label">Bitcoin</span><span class="tk-value">$' + fmtMoney(prices.btc, 0) + '</span></span>');
       }
       for (var i = 0; i < CITIES.length; i++) {
         var t = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: CITIES[i][1] }).format(new Date());

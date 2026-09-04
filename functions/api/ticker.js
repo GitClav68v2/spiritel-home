@@ -3,7 +3,7 @@
 // not traffic (idle site = zero upstream calls). If quotes are unreachable
 // the client quietly runs clocks-only, so a source change never breaks the
 // page — it just sheds the prices until we swap sources.
-const SYMBOLS = { dow: '%5EDJI', gold: 'GC=F', oil: 'CL=F' };
+const SYMBOLS = { dow: '%5EDJI', gold: 'GC=F', oil: 'CL=F', btc: 'BTC-USD' };
 
 async function quote(symbol) {
   const res = await fetch(
@@ -18,20 +18,21 @@ async function quote(symbol) {
 
 export async function onRequest(context) {
   const cache = caches.default;
-  const cacheKey = new Request('https://spiritel.net/__ticker-cache-v2');
+  const cacheKey = new Request('https://spiritel.net/__ticker-cache-v3');
   const hit = await cache.match(cacheKey);
   if (hit) return hit;
 
   try {
-    const [dow, gold, oil] = await Promise.all([
-      quote(SYMBOLS.dow), quote(SYMBOLS.gold), quote(SYMBOLS.oil)
+    const [dow, gold, oil, btc] = await Promise.all([
+      quote(SYMBOLS.dow), quote(SYMBOLS.gold), quote(SYMBOLS.oil), quote(SYMBOLS.btc)
     ]);
-    if (dow === null && gold === null && oil === null) throw new Error('no quotes');
+    if (dow === null && gold === null && oil === null && btc === null) throw new Error('no quotes');
 
     const out = { asOf: new Date().toISOString() };
     if (dow !== null) out.dow = dow;
     if (gold !== null) out.gold = gold;
     if (oil !== null) out.oil = oil;
+    if (btc !== null) out.btc = btc;
 
     const response = new Response(JSON.stringify(out), {
       headers: {
