@@ -165,6 +165,7 @@
     }
     .ticker-seq span { display: inline-flex; align-items: center; }
     .tk-label { color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-right: 6px; }
+    .tk-day { color: var(--muted); font-weight: 600; margin-right: 6px; }
     .tk-value { color: var(--text); font-weight: 500; }
     .tk-sep { color: var(--muted); margin: 0 18px; }
     @media (max-width: 600px) { .ticker-seq { font-size: 11px; } .tk-sep { margin: 0 12px; } }
@@ -358,9 +359,11 @@
         if (prices.oil) parts.push('<span><span class="tk-label">Oil</span><span class="tk-value">$' + fmtMoney(prices.oil, 2) + '</span></span>');
         if (prices.btc) parts.push('<span><span class="tk-label">Bitcoin</span><span class="tk-value">$' + fmtMoney(prices.btc, 0) + '</span></span>');
       }
+      var now = new Date();
       for (var i = 0; i < CITIES.length; i++) {
-        var t = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: CITIES[i][1] }).format(new Date());
-        parts.push('<span><span class="tk-label">' + CITIES[i][0] + '</span><span class="tk-value">' + t + '</span></span>');
+        var day = new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: CITIES[i][1] }).format(now).toUpperCase();
+        var t = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: CITIES[i][1] }).format(now);
+        parts.push('<span><span class="tk-label">' + CITIES[i][0] + '</span><span class="tk-day">' + day + '</span><span class="tk-value">' + t + '</span></span>');
       }
       return '<span class="ticker-seq">' + parts.join('<span class="tk-sep">▪</span>') + '<span class="tk-sep">▪</span></span>';
     }
