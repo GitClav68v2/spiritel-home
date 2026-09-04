@@ -2,108 +2,88 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!-- Card generator — render at 1248x832 and screenshot to wave-contact-card.png.
+     v2 2026-09-04: contact text moved to the lower dark band in cyan, no
+     translucent chip backgrounds (David). Export:
+     chrome --headless --screenshot=wave-contact-card.png --window-size=1248,832 file://.../card-gen.html -->
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { width: 600px; height: 315px; overflow: hidden; }
+  body { width: 1248px; height: 832px; overflow: hidden; }
   .card {
-    width: 600px; height: 315px;
+    width: 1248px; height: 832px;
     background-image: url('wave%20pic.jpg');
     background-size: cover;
-    background-position: center 26%;
+    background-position: center;
     position: relative;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     overflow: hidden;
   }
-  .overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(13, 22, 42, 0.75) 0%, rgba(13, 22, 42, 0.15) 40%, rgba(13, 22, 42, 0.1) 65%, rgba(13, 22, 42, 0.35) 100%);
-    z-index: 1;
-  }
-  .content {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-  }
   .title {
+    position: absolute; left: 0; right: 0; top: 88px;
     text-align: center;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 0.30em;
-    color: #5ce0e6;
-    text-transform: uppercase;
-    padding-top: 14px;
-    margin-bottom: 1px;
-    text-shadow: 0 0 20px rgba(92, 224, 230, 0.4), 0 0 40px rgba(92, 224, 230, 0.15);
+    font-size: 52px; font-weight: 700;
+    letter-spacing: 0.30em; text-indent: 0.30em;
+    color: #5ce0e6; text-transform: uppercase;
+    text-shadow: 0 0 28px rgba(92,224,230,0.45), 0 0 56px rgba(92,224,230,0.15);
     white-space: nowrap;
   }
   .tagline {
+    position: absolute; left: 0; right: 0; top: 172px;
     text-align: center;
-    font-size: 19px;
-    font-style: italic;
-    color: #c8d8e4;
-    margin-bottom: 0;
+    font-size: 38px; font-style: italic;
+    color: #eef4f8;
+  }
+  .divider {
+    position: absolute; left: 90px; right: 90px; top: 268px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(92,224,230,0.55), transparent);
   }
   .avatar {
     position: absolute;
-    left: 32px;
-    top: 62px;
-    width: 80px; height: 80px;
+    left: 292px; top: 418px;
+    width: 188px; height: 188px;
     border-radius: 50%;
-    border: 2.5px solid #3a9aae;
-    object-fit: cover;
-    object-position: center top;
-    box-shadow: 0 0 15px rgba(58, 154, 174, 0.4);
-  }
-  .info-box {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(12, 24, 42, 0.85);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(60, 140, 160, 0.25);
-    padding: 10px 24px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
+    border: 4px solid #3a9aae;
+    object-fit: cover; object-position: center top;
+    box-shadow: 0 0 26px rgba(58,154,174,0.5);
   }
   .name {
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: #e8f0f4;
-    text-transform: uppercase;
+    position: absolute; left: 0; right: 0; top: 668px;
+    text-align: center;
+    font-size: 30px; font-weight: 700;
+    letter-spacing: 0.18em; text-indent: 0.18em;
+    color: #eaf6f8; text-transform: uppercase;
+    text-shadow: 0 0 18px rgba(92,224,230,0.25);
     white-space: nowrap;
+  }
+  .details {
+    position: absolute; left: 0; right: 0; top: 726px;
+    display: flex; justify-content: center; align-items: center; gap: 56px;
   }
   .detail {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #8ab8cc;
-    font-size: 13px;
+    display: flex; align-items: center; gap: 12px;
+    color: #5ce0e6; font-size: 27px;
+    text-shadow: 0 0 16px rgba(92,224,230,0.35);
     white-space: nowrap;
   }
-  .detail svg { opacity: 0.8; flex-shrink: 0; }
+  .detail svg { flex-shrink: 0; }
 </style>
 </head>
 <body>
 <div class="card">
-  <div class="overlay"></div>
-  <div class="content">
-    <div class="title">Technology Incubator</div>
-    <div class="tagline">"All Signal, No Noise"</div>
-    <img class="avatar" src="david-ai.jpg" alt="">
-    <div class="info-box">
-      <div class="name">David Clavadetscher</div>
-      <div class="detail">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.15A16 16 0 0015.1 17.1l1.51-1.52a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-        (949) 633-4704
-      </div>
-      <div class="detail">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5ce0e6" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        david@spiritel.net
-      </div>
+  <div class="title">Technology Incubator</div>
+  <div class="tagline">"All Signal, No Noise"</div>
+  <div class="divider"></div>
+  <img class="avatar" src="david-ai.jpg" alt="">
+  <div class="name">David Clavadetscher</div>
+  <div class="details">
+    <div class="detail">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5ce0e6" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      david@spiritel.net
+    </div>
+    <div class="detail">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.15A16 16 0 0015.1 17.1l1.51-1.52a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      (714) 681-2412
     </div>
   </div>
 </div>
