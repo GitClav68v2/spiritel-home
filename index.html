@@ -336,7 +336,10 @@
        viewport and collide with the ticker. Compact both. */
     @media (max-height: 520px) {
       .wordmark { font-size: 1.6rem; letter-spacing: 0.22em; margin-bottom: 0.5rem !important; }
-      .card-img-wrap { max-height: 58vh; }
+      /* width:auto shrink-wraps the container to the scaled-down image, so
+         the card centers under the wordmark and the percentage-positioned
+         email/phone tap zones stay glued to the artwork. */
+      .card-img-wrap { max-height: 58vh; width: auto; max-width: none; }
       .card-img { max-height: 58vh; width: auto; }
       .stage { padding-bottom: 1rem; }
     }
@@ -456,6 +459,24 @@
     loadPrices();           // prices when they arrive
     setInterval(render, 30000);          // keep clocks current
     setInterval(loadPrices, 600000);     // refresh prices every 10 min
+
+    // iOS computes tile/dot percentage layout before the browser toolbars
+    // settle and won't re-measure until forced (a pinch-zoom did it in
+    // David's field test). Nudge the map's children to re-lay-out after
+    // load and on any resize/rotation — without touching the animated
+    // parent, so the spin never restarts.
+    function nudgeMap() {
+      var els = document.querySelectorAll('.globe-tile, .city-dot');
+      for (var i = 0; i < els.length; i++) {
+        els[i].style.display = 'none';
+        void els[i].offsetHeight;
+        els[i].style.display = '';
+      }
+    }
+    window.addEventListener('resize', nudgeMap);
+    window.addEventListener('orientationchange', function () { setTimeout(nudgeMap, 350); });
+    setTimeout(nudgeMap, 600);
+    setTimeout(nudgeMap, 2000);
   })();
   </script>
 
