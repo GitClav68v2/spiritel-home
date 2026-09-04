@@ -100,12 +100,17 @@
        mobile browsers (iOS Safari and Chrome both, differently) mis-paint
        animated repeating backgrounds, leaving black regions and detaching
        the dots from their continents (David's device test, 2026-09-04). */
+    /* Divs with a single stretched background, not <img> tiles: percentage
+       heights on replaced elements resolve inconsistently on mobile browsers,
+       which detached the map picture from the dot layer (device test #2).
+       Divs share the dots' exact containing-block math — glued by definition. */
     .globe-tile {
       position: absolute;
       top: 0; height: 100%; width: 50%;
-      object-fit: fill;
+      background-image: url('Spiritel%20Network%20Map.jpg');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
       pointer-events: none;
-      user-select: none;
     }
     .globe-tile:first-child { left: 0; }
     .globe-tile + .globe-tile { left: 50%; }
@@ -356,7 +361,7 @@
   <!-- Spinning Earth — lower third -->
   <div class="earth-stage">
     <div class="globe">
-      <div class="globe-map"><img class="globe-tile" src="Spiritel%20Network%20Map.jpg" alt=""><img class="globe-tile" src="Spiritel%20Network%20Map.jpg" alt=""></div>
+      <div class="globe-map"><div class="globe-tile"></div><div class="globe-tile"></div></div>
       <div class="globe-shade"></div>
     </div>
     <div class="globe-atmo"></div>
